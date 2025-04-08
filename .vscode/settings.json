@@ -3,7 +3,7 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-        "source.organizeImports": "always"
+      "source.organizeImports": "always"
     },
   },
   "isort.args": [
@@ -15,5 +15,5 @@
   ],
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
-  }
-  
+  "files.trimTrailingWhitespace": true
+}

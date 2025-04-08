@@ -42,5 +42,6 @@ pip install isort
   "editor.defaultFormatter": "ms-python.black-formatter",
   "editor.formatOnSave": true,
   "python.sortImports": true
+  "files.trimTrailingWhitespace": true
 }
 ```
