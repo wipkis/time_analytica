@@ -1,8 +1,8 @@
 
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
-from src.inputScreen import InputScreen
-from src.mainScreen import MainScreen
+from inputScreen import InputScreen
+from mainScreen import MainScreen
 
 
 class MainWindow(QMainWindow):
