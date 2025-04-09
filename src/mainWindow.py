@@ -1,8 +1,10 @@
-
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
 from inputScreen import InputScreen
 from mainScreen import MainScreen
+from recordManager import RecordManager
+
+CSV_PATH = "./res/202504.csv"
 
 
 class MainWindow(QMainWindow):
@@ -15,7 +17,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.stack)
 
         self.main_screen = MainScreen(self)
-        self.input_screen = InputScreen(self)
+        self.input_screen = InputScreen(self, RecordManager(CSV_PATH))
 
         self.stack.addWidget(self.main_screen)
         self.stack.addWidget(self.input_screen)
