@@ -54,4 +54,4 @@ class RecordManager:
         self.records.to_csv(self.csv_path, index=False)
 
     def to_string(self):
-        return self.records.to_csv(sep="\t", index=False)
+        return self.records[::-1].reset_index(drop=True).to_csv(sep="\t", index=False)
