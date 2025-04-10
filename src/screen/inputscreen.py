@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from recordManager import RecordManager
+from recordmanager import RecordManager
 
 RECODE_REGREX = r"^(?:[01][0-9]|2[0-3])[0-5][0-9] [^\s]+(?: [^\s]+)?(?: [^\s]+)?$"
 
@@ -21,10 +21,10 @@ class InputScreen(QWidget):
         r"^(?:[01][0-9]|2[0-3])[0-5][0-9] [^\s]+(?: [^\s]+)?(?: [^\s]+)?$"
     )
 
-    def __init__(self, main_window: QMainWindow, recode_manager: RecordManager):
+    def __init__(self, main_window: QMainWindow, record_manager: RecordManager):
         super().__init__()
         self.main_window = main_window
-        self.recode_manager = recode_manager
+        self.record_manager = record_manager
 
         self.input_field = QLineEdit()
         self.input_field.setPlaceholderText("여기에 입력하세요")
@@ -65,17 +65,17 @@ class InputScreen(QWidget):
             return
 
         fields = text.split(" ")
-        self.recode_manager.add_row(fields)
+        self.record_manager.add_row(fields)
         self.update_display()
         self.input_field.clear()
 
     def on_undo_click(self):
-        self.recode_manager.undo()
+        self.record_manager.undo()
         self.update_display()
 
     def on_save_click(self):
-        self.recode_manager.save()
+        self.record_manager.save()
         self.main_window.show_main_screen()
 
     def update_display(self):
-        self.display_area.setText(self.recode_manager.to_string())
+        self.display_area.setText(self.record_manager.to_string())

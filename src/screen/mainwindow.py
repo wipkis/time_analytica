@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import QMainWindow, QStackedWidget
 
-from inputScreen import InputScreen
-from mainScreen import MainScreen
-from recordManager import RecordManager
+from recordmanager import RecordManager
+from screen.inputscreen import InputScreen
+from screen.mainscreen import MainScreen
 
 CSV_PATH = "./res/202504.csv"
 
