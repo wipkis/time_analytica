@@ -1,6 +1,16 @@
+from datetime import datetime
+from unittest.mock import patch
+
 import pytest
 
 from recordManager import RecordManager
+
+
+@patch("recordManager.datetime")
+def test_today(mock_datetime):
+    fixed_today = datetime(2025, 4, 10)
+    mock_datetime.today.return_value = fixed_today
+    mock_datetime.strptime = datetime.strptime
 
 
 @pytest.fixture
@@ -51,3 +61,39 @@ def test_add_row_after_undo(manager):
     assert prev_last_row["duration"] == 10
     assert last_row["time"] == "0910"
     assert last_row["act"] == "act2"
+
+
+def test_handling_prev_and_get_date(manager):
+    # prev가 있는 경우
+    # 날자변경 없음
+    date = manager.handling_prev_and_get_date("0900")
+
+    last_row = manager.get_last_row()
+    assert date == "2025-04-01"
+    assert last_row["time"] == "0900"
+    assert last_row["duration"] == 0
+
+    date = manager.handling_prev_and_get_date("0930")
+
+    last_row = manager.get_last_row()
+    assert date == "2025-04-01"
+    assert last_row["time"] == "0900"
+    assert last_row["duration"] == 30
+
+    # 날자변경 있음
+    date = manager.handling_prev_and_get_date("0859")
+
+    last_row = manager.get_last_row()
+    assert date == "2025-04-02"
+    assert last_row["time"] == "0900"
+    assert last_row["duration"] == 1439
+
+    # prev가 없는 경우
+    manager.undo()
+    manager.undo()
+
+    date = manager.handling_prev_and_get_date("0859")
+
+    last_row = manager.get_last_row()
+    assert last_row is None
+    assert date == datetime.today().strftime("%Y-%m-%d")

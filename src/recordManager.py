@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 import pandas as pd
 
 from util import diff_minutes
@@ -12,12 +14,9 @@ class RecordManager:
         return self.records.iloc[-1] if not self.records.empty else None
 
     def add_row(self, fields: list[str]):
-        prev = self.get_last_row()
-        if prev is None:
-            raise ValueError("기존 데이터가 없습니다.")
-
+        new_date = self.handling_prev_and_get_date(fields[0])
         new_row = {
-            "date": prev["date"],
+            "date": new_date,
             "time": fields[0],
             "duration": 0,
             "act": fields[1],
@@ -25,14 +24,27 @@ class RecordManager:
             **({"category_2": fields[3]} if len(fields) > 3 else {}),
         }
 
-        last_idx = self.records.index[-1]
-        self.records.at[last_idx, "duration"] = diff_minutes(
-            prev["time"], new_row["time"]
-        )
-
         self.records = pd.concat(
             [self.records, pd.DataFrame([new_row])], ignore_index=True
         )
+
+    def handling_prev_and_get_date(self, time: str):
+        """
+        시간을 입력받아 이전 행의 duration을 업데이트한다.
+        이전 행의 시간과 새 시간을 보고 새 행의 날자를 얻는다.
+        """
+        prev = self.get_last_row()
+        if prev is None:
+            return datetime.today().strftime("%Y-%m-%d")
+
+        last_idx = self.records.index[-1]
+        self.records.at[last_idx, "duration"] = diff_minutes(prev["time"], time)
+
+        if prev["time"] <= time:
+            return prev["date"]
+        else:
+            next_day = datetime.strptime(prev["date"], "%Y-%m-%d") + timedelta(days=1)
+            return next_day.strftime("%Y-%m-%d")
 
     def undo(self):
         if not self.records.empty:
