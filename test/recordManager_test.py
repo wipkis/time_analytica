@@ -3,10 +3,10 @@ from unittest.mock import patch
 
 import pytest
 
-from recordManager import RecordManager
+from recordmanager import RecordManager
 
 
-@patch("recordManager.datetime")
+@patch("recordmanager.datetime")
 def test_today(mock_datetime):
     fixed_today = datetime(2025, 4, 10)
     mock_datetime.today.return_value = fixed_today
