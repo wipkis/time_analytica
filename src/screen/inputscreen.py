@@ -13,8 +13,6 @@ from PySide6.QtWidgets import (
 
 from recordmanager import RecordManager
 
-RECODE_REGREX = r"^(?:[01][0-9]|2[0-3])[0-5][0-9] [^\s]+(?: [^\s]+)?(?: [^\s]+)?$"
-
 
 class InputScreen(QWidget):
     TIME_INPUT_REGEX = (
