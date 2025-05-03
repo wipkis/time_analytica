@@ -17,9 +17,14 @@ class MainWindow(QMainWindow):
         self.stack = QStackedWidget()
         self.setCentralWidget(self.stack)
 
-        self.main_screen = MainScreen(self)
-        self.input_screen = InputScreen(self, RecordManager(CSV_PATH))
-        self.analysis_screen = AnalysisScreen(self)
+        self.main_screen = MainScreen(
+            to_analysis_screen=self.show_analysis_screen,
+            to_input_screen=self.show_input_screen,
+        )
+        self.input_screen = InputScreen(
+            record_manager=RecordManager(CSV_PATH), to_main_screen=self.show_main_screen
+        )
+        self.analysis_screen = AnalysisScreen(to_main_screen=self.show_main_screen)
 
         self.stack.addWidget(self.analysis_screen)
         self.stack.addWidget(self.input_screen)

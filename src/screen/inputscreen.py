@@ -1,9 +1,9 @@
 import re
+from typing import Callable
 
 from PySide6.QtWidgets import (
     QHBoxLayout,
     QLineEdit,
-    QMainWindow,
     QMessageBox,
     QPushButton,
     QTextEdit,
@@ -19,10 +19,10 @@ class InputScreen(QWidget):
         r"^(?:[01][0-9]|2[0-3])[0-5][0-9] [^\s]+(?: [^\s]+)?(?: [^\s]+)?$"
     )
 
-    def __init__(self, main_window: QMainWindow, record_manager: RecordManager):
+    def __init__(self, *, record_manager: RecordManager, to_main_screen: Callable):
         super().__init__()
-        self.main_window = main_window
         self.record_manager = record_manager
+        self.to_main_screen = to_main_screen
 
         self.input_field = QLineEdit()
         self.input_field.setPlaceholderText("여기에 입력하세요")
@@ -73,7 +73,7 @@ class InputScreen(QWidget):
 
     def on_save_click(self):
         self.record_manager.save()
-        self.main_window.show_main_screen()
+        self.to_main_screen()
 
     def update_display(self):
         self.display_area.setText(self.record_manager.to_string())

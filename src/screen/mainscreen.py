@@ -1,19 +1,19 @@
-from PySide6.QtWidgets import QMainWindow, QPushButton, QVBoxLayout, QWidget
+from typing import Callable
+
+from PySide6.QtWidgets import QPushButton, QVBoxLayout, QWidget
 
 
 class MainScreen(QWidget):
-    main_window: QMainWindow
 
-    def __init__(self, main_window):
+    def __init__(self,*, to_analysis_screen: Callable, to_input_screen: Callable):
         super().__init__()
-        self.main_window = main_window
 
         layout = QVBoxLayout()
         self.button_input = QPushButton("입력")
-        self.button_input.clicked.connect(self.main_window.show_input_screen)
+        self.button_input.clicked.connect(to_input_screen)
 
         self.button_analysis = QPushButton("통계")
-        self.button_analysis.clicked.connect(self.main_window.show_analysis_screen)
+        self.button_analysis.clicked.connect(to_analysis_screen)
 
         layout.addWidget(self.button_input)
         layout.addWidget(self.button_analysis)
